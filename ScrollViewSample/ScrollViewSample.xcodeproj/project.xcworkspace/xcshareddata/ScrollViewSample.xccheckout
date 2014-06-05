@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>83525D6F-F0DB-43F5-A3A3-8B557381452E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ScrollViewSample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>849A51FD-A72C-4C7F-9D83-4E5CC341659E</key>
+		<string>https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ScrollViewSample/ScrollViewSample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>849A51FD-A72C-4C7F-9D83-4E5CC341659E</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>849A51FD-A72C-4C7F-9D83-4E5CC341659E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>849A51FD-A72C-4C7F-9D83-4E5CC341659E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AppStoreStyleHorizontalScrollView</string>
+		</dict>
+	</array>
+</dict>
+</plist>
