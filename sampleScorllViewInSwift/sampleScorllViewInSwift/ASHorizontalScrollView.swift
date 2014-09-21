@@ -2,6 +2,11 @@
 * ASHorizontalScrollView.swift
 * The MIT License (MIT)
 * Copyright (C) 2014 WEIWEI CHEN
+* ---------------------------------------------------------
+*  HIstory
+*  Created by WEIWEI CHEN on 14-6-8.
+*  Edit by WEIWEI CHEN 14-9-21: fix problems to work on xcode 6.0.1
+*
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 *
@@ -44,7 +49,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     var miniAppearPxOfLastItem:CGFloat = 10.0
     
     
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         
         //default item size is 80% of height
@@ -53,6 +58,10 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.showsHorizontalScrollIndicator = false
         self.decelerationRate = UIScrollViewDecelerationRateFast
         self.delegate = self;
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func addItem(item:UIView)
@@ -119,16 +128,15 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         
         return true;
     }
-    
-    
+
+
     //ScrollView delegates
-    func scrollViewWillEndDragging(scrollView: ASHorizontalScrollView!, withVelocity velocity: CGPoint, targetContentOffset: CMutablePointer<CGPoint>)
+    func scrollViewWillEndDragging(scrollView: ASHorizontalScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
     {
-        //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
-        var targetOffset:CGPoint = UnsafePointer<CGPoint>(targetContentOffset).memory;
         //move to closest item
-        if (targetOffset.x + scrollView.frame.size.width < scrollView.contentSize.width) {
-            UnsafePointer<CGPoint>(targetContentOffset).memory.x = self.getClosestItemByX(position:targetOffset.x, inScrollView:scrollView) - scrollView.leftMarginPx;
+        if (targetContentOffset.memory.x + scrollView.frame.size.width < scrollView.contentSize.width) {
+            //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
+            targetContentOffset.memory.x = self.getClosestItemByX(position:targetContentOffset.memory.x, inScrollView:scrollView) - scrollView.leftMarginPx;
         }
     }
     
