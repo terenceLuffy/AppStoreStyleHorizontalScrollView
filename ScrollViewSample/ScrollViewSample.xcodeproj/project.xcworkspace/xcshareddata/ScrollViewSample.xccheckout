@@ -10,29 +10,29 @@
 	<string>ScrollViewSample</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>849A51FD-A72C-4C7F-9D83-4E5CC341659E</key>
+		<key>04AD30FF472F4692B7444AFA771969108DD6AA30</key>
 		<string>https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ScrollViewSample/ScrollViewSample.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>849A51FD-A72C-4C7F-9D83-4E5CC341659E</key>
+		<key>04AD30FF472F4692B7444AFA771969108DD6AA30</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>849A51FD-A72C-4C7F-9D83-4E5CC341659E</string>
+	<string>04AD30FF472F4692B7444AFA771969108DD6AA30</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>849A51FD-A72C-4C7F-9D83-4E5CC341659E</string>
+			<string>04AD30FF472F4692B7444AFA771969108DD6AA30</string>
 			<key>IDESourceControlWCCName</key>
 			<string>AppStoreStyleHorizontalScrollView</string>
 		</dict>
