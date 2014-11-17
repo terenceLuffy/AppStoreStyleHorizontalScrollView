@@ -14,7 +14,7 @@
 		<string>https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ScrollViewSample/ScrollViewSample.xcodeproj/project.xcworkspace</string>
+	<string>ScrollViewSample/ScrollViewSample.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>04AD30FF472F4692B7444AFA771969108DD6AA30</key>

@@ -24,6 +24,7 @@ const float kCellHeight = 60.0f;
     sampleTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height)];
     sampleTableView.delegate = self;
     sampleTableView.dataSource = self;
+    sampleTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:sampleTableView];
 
 }
@@ -32,6 +33,15 @@ const float kCellHeight = 60.0f;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    if(UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation]))sampleTableView.frame = CGRectMake(0, 0, sampleTableView.frame.size.width, sampleTableView.frame.size.height);
+    else sampleTableView.frame = CGRectMake(0, 20, sampleTableView.frame.size.width, sampleTableView.frame.size.height);
+
+    [sampleTableView reloadData];
 }
 
 #pragma tableview datasource
@@ -60,10 +70,11 @@ const float kCellHeight = 60.0f;
             //sample code of how to use this scroll view
             ASHorizontalScrollView *horizontalScrollView = [[ASHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight)];
             [cell.contentView addSubview:horizontalScrollView];
+            horizontalScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             horizontalScrollView.uniformItemSize = CGSizeMake(50, 50);
             //this must be called after changing any size or margin property of this class to get acurrate margin
             [horizontalScrollView setItemsMarginOnce];
-            //create 10 buttons for cell 1
+            //create 20 buttons for cell 1
             NSMutableArray *buttons = [NSMutableArray array];
             for (int i=1; i<20; i++) {
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -75,6 +86,7 @@ const float kCellHeight = 60.0f;
         else if (indexPath.row == 1) {
             ASHorizontalScrollView *horizontalScrollView = [[ASHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight)];
             [cell.contentView addSubview:horizontalScrollView];
+            horizontalScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             horizontalScrollView.uniformItemSize = CGSizeMake(80, 50);
             //this must be called after changing any size or margin property of this class to get acurrate margin
             [horizontalScrollView setItemsMarginOnce];

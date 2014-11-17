@@ -17,20 +17,33 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    let kCellHeight:CGFloat = 60.0;
+    let kCellHeight:CGFloat = 60.0
+    var sampleTableView:UITableView!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+    }
                             
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sampleTableView:UITableView = UITableView(frame:CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height), style:.Grouped)
+        self.sampleTableView = UITableView(frame:CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height), style:.Grouped)
         sampleTableView.dataSource = self
         sampleTableView.delegate = self
+        sampleTableView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.view.addSubview(sampleTableView)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
+        
+        self.sampleTableView.reloadData()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
@@ -42,8 +55,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: CellIdentifier)
             //(cell as UITableViewCell).text = "Row #\(indexPath.row)"
             let horizontalScrollView:ASHorizontalScrollView = ASHorizontalScrollView(frame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight))
+            horizontalScrollView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
             if indexPath.row == 0{
-                horizontalScrollView.uniformItemSize = CGSizeMake(50, 50);
+                horizontalScrollView.uniformItemSize = CGSizeMake(50, 50)
                 //this must be called after changing any size or margin property of this class to get acurrate margin
                 horizontalScrollView.setItemsMarginOnce()
                 for i in 1...10{
@@ -53,8 +67,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
             else if indexPath.row == 1 {
-                horizontalScrollView.miniAppearPxOfLastItem = 30;
-                horizontalScrollView.uniformItemSize = CGSizeMake(80, 50);
+                horizontalScrollView.miniAppearPxOfLastItem = 30
+                horizontalScrollView.uniformItemSize = CGSizeMake(80, 50)
                 //this must be called after changing any size or margin property of this class to get acurrate margin
                 horizontalScrollView.setItemsMarginOnce()
                 for i in 1...10{
@@ -75,7 +89,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat
     {
-        return kCellHeight;
+        return kCellHeight
     }
     
 }

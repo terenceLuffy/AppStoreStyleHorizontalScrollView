@@ -42,8 +42,12 @@
 
 - (void)setFrame:(CGRect)frame
 {
+    CGRect oldValue = self.frame;
     [super setFrame:frame];
     itemY = (frame.size.height-self.uniformItemSize.height)/2;
+    if(frame.size.width != oldValue.size.width){
+        [self refreshSubView];
+    }
 }
 
 - (void)setUniformItemSize:(CGSize)uniformItemSize
@@ -116,6 +120,18 @@
     self.contentSize = CGSizeMake(self.contentSize.width-self.itemsMargin-self.uniformItemSize.width, self.frame.size.height);
     
     return true;
+}
+
+//refresh all subviews for changing size of current frame
+- (void) refreshSubView
+{
+    [self setItemsMarginOnce];
+    float itemX = self.leftMarginPx;
+    for (UIView *item in self.items) {
+        item.frame = CGRectMake(itemX, item.frame.origin.y, item.frame.size.width, item.frame.size.height);
+        itemX += item.frame.size.width + self.itemsMargin;
+    }
+    self.contentSize = CGSizeMake(itemX, self.frame.size.height);
 }
 
 
