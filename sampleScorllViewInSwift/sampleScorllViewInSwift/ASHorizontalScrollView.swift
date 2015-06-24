@@ -73,7 +73,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         
         //setup new item size and origin
         if (self.items.count>0) {
-            var lastItemRect:CGRect = (self.items[self.items.count-1] as UIButton).frame;
+            var lastItemRect:CGRect = (self.items[self.items.count-1] as! UIButton).frame;
             item.frame = CGRectMake(lastItemRect.origin.x + self.uniformItemSize.width + self.itemsMargin, itemY, self.uniformItemSize.width, self.uniformItemSize.height)
         }
         else {
@@ -148,11 +148,12 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
 
 
     //ScrollView delegates
-    func scrollViewWillEndDragging(scrollView: ASHorizontalScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
-    {
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
+        var targetOffset:CGPoint = UnsafePointer<CGPoint>(targetContentOffset).memory;
         //move to closest item
-        if (targetContentOffset.memory.x + scrollView.frame.size.width < scrollView.contentSize.width) {
-            targetContentOffset.memory.x = self.getClosestItemByX(position:targetContentOffset.memory.x, inScrollView:scrollView) - scrollView.leftMarginPx
+        if (targetOffset.x + scrollView.frame.size.width < scrollView.contentSize.width) {
+            targetContentOffset.memory.x = self.getClosestItemByX(position:targetOffset.x, inScrollView:(scrollView as! ASHorizontalScrollView)) - (scrollView as! ASHorizontalScrollView).leftMarginPx;
         }
     }
     
