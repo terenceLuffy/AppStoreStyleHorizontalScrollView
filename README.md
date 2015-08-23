@@ -5,7 +5,7 @@ App store style horizontal scroll view
 
 It acts similar to apps sliding behaviours in App store. There are both Objective-C and Swift version available and they perform exactly the same function, please find whichever you like.
 
-![](https://dl.dropboxusercontent.com/u/91675323/thumbookr1.gif)[](https://dl.dropboxusercontent.com/u/91675323/thumbookr2.gif)
+![](https://dl.dropboxusercontent.com/u/91675323/thumbookr1.gif)![](https://dl.dropboxusercontent.com/u/91675323/thumbookr2.gif)
 
 Please note that the gif is not from the sample project.
 
