@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.author       = { "Weiwei Chen" => "terenceluffy@gmail.com" }
   s.platform     = :ios, "8.0"
   s.ios.deployment_target = "8.0"
-  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.0.1" }
+  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.0.2" }
   s.source_files  = 'Sources/*'
   s.frameworks = 'UIKit'
   s.requires_arc = true
