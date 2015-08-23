@@ -20,7 +20,7 @@ pod 'ASHorizontalScrollView', '~> 1.0'
 
 Objective-C
 ```ruby
-pod 'AppStoreStyleHorizontalScrollViewForObjectiveC', '~> 1.0'
+pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.0'
 
 ``` 
 
