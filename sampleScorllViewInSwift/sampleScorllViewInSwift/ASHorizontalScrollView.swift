@@ -17,10 +17,10 @@
 
 import UIKit
 
-class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
+public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     let scale = UIScreen.mainScreen().scale
     
-    override var frame: CGRect{
+    override public var frame: CGRect{
         didSet{
             itemY = (frame.size.height-self.uniformItemSize.height)/2
             //if width changes, then need to get new margin and reset all views
@@ -30,31 +30,31 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         }
     }
     /// y position of all items
-    var itemY: CGFloat = 0
+    public var itemY: CGFloat = 0
     /// an array which refer to all added items
-    var items: Array<UIView> = []
+    public var items: Array<UIView> = []
     
     /// the uniform size of all added items, please set it before adding any items, otherwise, default size will be applied
-    var uniformItemSize:CGSize = CGSizeMake(0,0) {
+    public var uniformItemSize:CGSize = CGSizeMake(0,0) {
         didSet{
             itemY = (frame.size.height-self.uniformItemSize.height)/2
         }
     }
     
     /// store the current items' margin
-    var itemsMargin:CGFloat = 10.0
+    public var itemsMargin:CGFloat = 10.0
     
     /// the margin between left border and first item
-    var leftMarginPx:CGFloat = 5.0
+    public var leftMarginPx:CGFloat = 5.0
     
     /// the mini margin between items, it is the seed to calculate the actual margin which is not less than
-    var miniMarginPxBetweenItems:CGFloat  = 10.0
+    public var miniMarginPxBetweenItems:CGFloat  = 10.0
     
     /// the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
-    var miniAppearPxOfLastItem:CGFloat = 20.0
+    public var miniAppearPxOfLastItem:CGFloat = 20.0
     
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         //default item size is 80% of height
@@ -65,11 +65,11 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.delegate = self
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func addItem(item:UIView)
+    public func addItem(item:UIView)
     {
         //setup new item size and origin
         if (self.items.count>0) {
@@ -86,14 +86,14 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.contentSize = CGSizeMake(item.frame.origin.x + self.uniformItemSize.width + self.leftMarginPx, self.frame.size.height);
     }
     
-    func addItems(items:Array<UIView>)
+    public func addItems(items:Array<UIView>)
     {
         for item in items {
             self.addItem(item)
         }
     }
     
-    func setItemsMarginOnce()
+    public func setItemsMarginOnce()
     {
         self.itemsMargin = self.calculateMarginBetweenItems();
     }
@@ -108,7 +108,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     }
     
     //return whether removing action is success
-    func removeItem(item:UIView) -> Bool
+    public func removeItem(item:UIView) -> Bool
     {
         var index = (self.items as NSArray).indexOfObject(item);
         if (index != NSNotFound) {
@@ -117,7 +117,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         else {return false}
     }
     
-    func removeAllItems()->Bool
+    public func removeAllItems()->Bool
     {
         for (var i = self.items.count-1; i >= 0; i--) {
             var item:UIView = self.items[i]
@@ -129,7 +129,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         return true
     }
     
-    func removeItemAtIndex(index:Int)->Bool
+    public func removeItemAtIndex(index:Int)->Bool
     {
         if (index < 0 || index > self.items.count-1) {return false}
         //set new x position from index to the end
@@ -146,7 +146,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     }
     
     //refresh all subviews for changing size of current frame
-    func refreshSubView()
+    public func refreshSubView()
     {
         self.setItemsMarginOnce();
         var itemX = self.leftMarginPx
@@ -162,7 +162,7 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     
     
     //ScrollView delegates
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
         var targetOffset:CGPoint = UnsafePointer<CGPoint>(targetContentOffset).memory;
         //move to closest item

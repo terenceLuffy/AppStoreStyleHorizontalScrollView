@@ -51,6 +51,9 @@
 //remove item from scroll view with index in the array
 - (BOOL) removeItemAtIndex:(NSInteger)index;
 
+//remove all items
+- (BOOL) removeAllItems;
+
 //calculate items' margin, this must be called after setting any size or margin properties
 - (void) setItemsMarginOnce;
 @end
