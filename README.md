@@ -15,12 +15,12 @@ Please note that the gif is not from the sample project.
 
 Swift
 ```ruby
-pod 'ASHorizontalScrollView', '~> 1.0.3'
+pod 'ASHorizontalScrollView', '~> 1.0'
 ``` 
 
 Objective-C
 ```ruby
-pod 'AppStoreStyleHorizontalScrollViewForObjectiveC', '~> 1.0.3'
+pod 'AppStoreStyleHorizontalScrollViewForObjectiveC', '~> 1.0'
 
 ``` 
 
