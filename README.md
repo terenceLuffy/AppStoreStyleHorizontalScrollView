@@ -1,4 +1,4 @@
-AppStoreStyleHorizontalScrollView
+ASHorizontalScrollView
 =================================
 
 App store style horizontal scroll view
@@ -25,8 +25,8 @@ pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.0'
 ``` 
 
 
-### Version
-It is developed based on UIScrollView and its delegate methods, so it is completely compatible to most iOS versions.
+### iOS Version
+It is developed based on UIScrollView and its delegate methods, so it is completely compatible to most iOS versions. But the Swift version requires 8.0 or above.
 
 ### Authorization
 The MIT License (MIT)
