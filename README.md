@@ -11,8 +11,8 @@ Please note that the gif is not from the sample project.
 
 ### Installation
 1. You can download the source from "Source" folder and drag into your project
-2. Using CocoaPods
-####[CocoaPods](http://cocoapods.org)
+2. Using [CocoaPods](http://cocoapods.org)
+
 Swift
 ```ruby
 pod 'ASHorizontalScrollView', '~> 1.0.3'
