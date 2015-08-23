@@ -9,6 +9,22 @@ It acts similar to apps sliding behaviours in App store. There are both Objectiv
 
 Please note that the gif is not from the sample project.
 
+### Installation
+1. You can download the source from "Source" folder and drag into your project
+2. Using CocoaPods
+####[CocoaPods](http://cocoapods.org)
+Swift
+```ruby
+pod 'ASHorizontalScrollView', '~> 1.0.3'
+``` 
+
+Objective-C
+```ruby
+pod 'AppStoreStyleHorizontalScrollViewForObjectiveC', '~> 1.0.3'
+
+``` 
+
+
 ### Version
 It is developed based on UIScrollView and its delegate methods, so it is completely compatible to most iOS versions.
 
