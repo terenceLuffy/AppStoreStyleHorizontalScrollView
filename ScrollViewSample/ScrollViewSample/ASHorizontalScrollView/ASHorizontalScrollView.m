@@ -12,7 +12,7 @@
 
 #define kDefaultLeftMargin 5.0f;
 #define kMinMarginBetweenItems 10.0f;
-#define kMinWidthAppearOfLastItem 10.0f;
+#define kMinWidthAppearOfLastItem 20.0f;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -84,10 +84,11 @@
 //calculate the exact margin between items
 - (int)calculateMarginBetweenItems
 {
+    CGFloat scale = [UIScreen mainScreen].scale;
     //calculate how many items listed on current screen except the last half appearance one
-    int numberOfItemForCurrentWidth = floorf((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(_uniformItemSize.width+self.miniMarginPxBetweenItems));
+    int numberOfItemForCurrentWidth = floorf((self.frame.size.width*scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/(_uniformItemSize.width+self.miniMarginPxBetweenItems));
     
-    return round((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/numberOfItemForCurrentWidth - _uniformItemSize.width);
+    return round((self.frame.size.width*scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/numberOfItemForCurrentWidth - _uniformItemSize.width);
 }
 
 - (void)setItemsMarginOnce
@@ -96,6 +97,19 @@
 }
 
 #pragma mark - remove item
+
+- (BOOL) removeAllItems
+{
+    for (long i = self.items.count - 1; i >= 0; i--) {
+        UIView *item = self.items[i];
+        [item removeFromSuperview];
+    }
+    [self.items removeAllObjects];
+    self.contentSize = CGSizeMake(self.contentSize.width-self.itemsMargin-self.uniformItemSize.width, self.frame.size.height);
+    
+    return true;
+}
+
 //return whether removing action is success
 - (BOOL)removeItem:(UIView *)item
 {
@@ -131,6 +145,7 @@
         item.frame = CGRectMake(itemX, item.frame.origin.y, item.frame.size.width, item.frame.size.height);
         itemX += item.frame.size.width + self.itemsMargin;
     }
+    itemX = itemX - self.itemsMargin + self.leftMarginPx;
     self.contentSize = CGSizeMake(itemX, self.frame.size.height);
 }
 

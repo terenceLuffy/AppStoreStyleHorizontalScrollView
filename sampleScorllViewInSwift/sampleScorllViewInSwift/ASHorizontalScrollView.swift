@@ -18,39 +18,40 @@
 import UIKit
 
 class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
+    let scale = UIScreen.mainScreen().scale
     
     override var frame: CGRect{
-    didSet{
-        itemY = (frame.size.height-self.uniformItemSize.height)/2
-        //if width changes, then need to get new margin and reset all views
-        if(frame.width != oldValue.width){
-            self.refreshSubView()
+        didSet{
+            itemY = (frame.size.height-self.uniformItemSize.height)/2
+            //if width changes, then need to get new margin and reset all views
+            if(frame.width != oldValue.width){
+                self.refreshSubView()
+            }
         }
     }
-    }
-    //y position of all items
+    /// y position of all items
     var itemY: CGFloat = 0
-    //an array which refer to all added items
+    /// an array which refer to all added items
     var items: Array<UIView> = []
     
-    //the uniform size of all added items, please set it before adding any items, otherwise, default size will be applied
+    /// the uniform size of all added items, please set it before adding any items, otherwise, default size will be applied
     var uniformItemSize:CGSize = CGSizeMake(0,0) {
-    didSet{
-        itemY = (frame.size.height-self.uniformItemSize.height)/2
-    }
+        didSet{
+            itemY = (frame.size.height-self.uniformItemSize.height)/2
+        }
     }
     
-    //store the current items' margin
+    /// store the current items' margin
     var itemsMargin:CGFloat = 10.0
     
-    //the margin between left border and first item
+    /// the margin between left border and first item
     var leftMarginPx:CGFloat = 5.0
     
-    //the mini margin between items, it is the seed to calculate the actual margin which is not less than
+    /// the mini margin between items, it is the seed to calculate the actual margin which is not less than
     var miniMarginPxBetweenItems:CGFloat  = 10.0
     
-    //the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
-    var miniAppearPxOfLastItem:CGFloat = 10.0
+    /// the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
+    var miniAppearPxOfLastItem:CGFloat = 20.0
     
     
     override init(frame: CGRect) {
@@ -63,17 +64,16 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.decelerationRate = UIScrollViewDecelerationRateFast
         self.delegate = self
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     func addItem(item:UIView)
     {
-        
         //setup new item size and origin
         if (self.items.count>0) {
-            var lastItemRect:CGRect = (self.items[self.items.count-1] as! UIButton).frame;
+            var lastItemRect:CGRect = self.items[self.items.count-1].frame;
             item.frame = CGRectMake(lastItemRect.origin.x + self.uniformItemSize.width + self.itemsMargin, itemY, self.uniformItemSize.width, self.uniformItemSize.height)
         }
         else {
@@ -102,9 +102,9 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     func calculateMarginBetweenItems() -> CGFloat
     {
         //calculate how many items listed on current screen except the last half appearance one
-        var numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
+        var numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width*self.scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
         //round func is not compatible in 32bit devices but only in 64bit(5s and iPad Air), so I use this stupid way :)
-        return CGFloat(Int((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width));
+        return CGFloat(Int((self.frame.size.width*self.scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width));
     }
     
     //return whether removing action is success
@@ -115,6 +115,18 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
             return self.removeItemAtIndex(index)
         }
         else {return false}
+    }
+    
+    func removeAllItems()->Bool
+    {
+        for (var i = self.items.count-1; i >= 0; i--) {
+            var item:UIView = self.items[i]
+            item.removeFromSuperview()
+        }
+        self.items.removeAll(keepCapacity: false)
+        self.contentSize = CGSizeMake(self.contentSize.width-self.itemsMargin-self.uniformItemSize.width, self.frame.size.height)
+        
+        return true
     }
     
     func removeItemAtIndex(index:Int)->Bool
@@ -143,10 +155,12 @@ class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
             item.frame = CGRectMake(itemX, item.frame.origin.y, item.frame.width, item.frame.height)
             itemX += item.frame.width + self.itemsMargin
         }
+        
+        itemX = itemX - self.itemsMargin + self.leftMarginPx;
         self.contentSize = CGSizeMake(itemX, self.frame.size.height)
     }
-
-
+    
+    
     //ScrollView delegates
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
