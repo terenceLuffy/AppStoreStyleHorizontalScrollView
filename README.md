@@ -23,8 +23,9 @@ Objective-C
 pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.1'
 
 ``` 
-### History:
+### Versions:
 1.0: Initial release
+
 1.1: Change to adapt iOS 9 and Swift 2.1
 
 ### iOS Supported Version
