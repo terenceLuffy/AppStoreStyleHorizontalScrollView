@@ -221,7 +221,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SA;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Zuse;
 				TargetAttributes = {
 					7402EE06193BB82D00B1C37D = {
@@ -356,6 +356,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -419,6 +420,7 @@
 				GCC_PREFIX_HEADER = "ScrollViewSample/ScrollViewSample-Prefix.pch";
 				INFOPLIST_FILE = "ScrollViewSample/ScrollViewSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Zuse.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -433,6 +435,7 @@
 				GCC_PREFIX_HEADER = "ScrollViewSample/ScrollViewSample-Prefix.pch";
 				INFOPLIST_FILE = "ScrollViewSample/ScrollViewSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Zuse.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -442,11 +445,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrollViewSample.app/ScrollViewSample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScrollViewSample/ScrollViewSample-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -454,6 +452,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "ScrollViewSampleTests/ScrollViewSampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "Zuse.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -464,14 +463,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ScrollViewSample.app/ScrollViewSample";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScrollViewSample/ScrollViewSample-Prefix.pch";
 				INFOPLIST_FILE = "ScrollViewSampleTests/ScrollViewSampleTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "Zuse.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

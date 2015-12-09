@@ -1,10 +1,20 @@
-//
-//  ASHorizontalScrollView.m
-//  ScrollViewSample
-//
-//  Created by Vivien on 2014-06-01.
-//  Copyright (c) 2014 Zuse. All rights reserved.
-//
+/* ---------------------------------------------------------
+ * ASHorizontalScrollView.m
+ * The MIT License (MIT)
+ * Copyright (C) 2014-2015 WEIWEI CHEN
+ * ---------------------------------------------------------
+ *  History
+ *  Created by WEIWEI CHEN on 14-6-1.
+ *  Edit by WEIWEI CHEN 14-9-21: fix problems to work on xcode 6.0.1
+ *  Edit by WEIWEI CHEN 15-12-09: add comments on functions, remove scale when calculating margin, it seems that the behaviour in iOS 9 change the way of align views
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * -------------------------------------------------------*/
 
 #import "ASHorizontalScrollView.h"
 
@@ -81,14 +91,14 @@
     }
 }
 
-//calculate the exact margin between items
+/// Calculate the exact margin between items
 - (int)calculateMarginBetweenItems
 {
-    CGFloat scale = [UIScreen mainScreen].scale;
+//    CGFloat scale = [UIScreen mainScreen].scale;
     //calculate how many items listed on current screen except the last half appearance one
-    int numberOfItemForCurrentWidth = floorf((self.frame.size.width*scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/(_uniformItemSize.width+self.miniMarginPxBetweenItems));
+    int numberOfItemForCurrentWidth = floorf((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(_uniformItemSize.width+self.miniMarginPxBetweenItems));
     
-    return round((self.frame.size.width*scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/numberOfItemForCurrentWidth - _uniformItemSize.width);
+    return round((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/numberOfItemForCurrentWidth - _uniformItemSize.width);
 }
 
 - (void)setItemsMarginOnce
@@ -97,7 +107,6 @@
 }
 
 #pragma mark - remove item
-
 - (BOOL) removeAllItems
 {
     for (long i = self.items.count - 1; i >= 0; i--) {
@@ -110,7 +119,6 @@
     return true;
 }
 
-//return whether removing action is success
 - (BOOL)removeItem:(UIView *)item
 {
     NSInteger index = [self.items indexOfObject:item];
@@ -136,7 +144,7 @@
     return true;
 }
 
-//refresh all subviews for changing size of current frame
+/// Refresh all subviews for changing size of current frame
 - (void) refreshSubView
 {
     [self setItemsMarginOnce];

@@ -57,50 +57,55 @@ const float kCellHeight = 60.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifierPortrait = @"CellPortrait";
+    static NSString *CellIdentifierLandscape = @"CellLandscape";
+    NSString *indentifier = self.view.frame.size.width > self.view.frame.size.height ? CellIdentifierLandscape : CellIdentifierPortrait;
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifier];
     
     if (!cell)
 	{
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:indentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
+        ASHorizontalScrollView *horizontalScrollView = [[ASHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight)];
         if (indexPath.row == 0) {
+            horizontalScrollView.miniAppearPxOfLastItem = 10;
             //sample code of how to use this scroll view
-            ASHorizontalScrollView *horizontalScrollView = [[ASHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight)];
-            [cell.contentView addSubview:horizontalScrollView];
-            horizontalScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             horizontalScrollView.uniformItemSize = CGSizeMake(50, 50);
             //this must be called after changing any size or margin property of this class to get acurrate margin
             [horizontalScrollView setItemsMarginOnce];
             //create 20 buttons for cell 1
             NSMutableArray *buttons = [NSMutableArray array];
             for (int i=1; i<20; i++) {
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
                 label.backgroundColor = [UIColor blueColor];
                 [buttons addObject:label];
             }
             [horizontalScrollView addItems:buttons];
         }
         else if (indexPath.row == 1) {
-            ASHorizontalScrollView *horizontalScrollView = [[ASHorizontalScrollView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, kCellHeight)];
-            [cell.contentView addSubview:horizontalScrollView];
-            horizontalScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            horizontalScrollView.uniformItemSize = CGSizeMake(80, 50);
+            horizontalScrollView.miniAppearPxOfLastItem = 20;
+            //setup the uniform size for all added items
+            horizontalScrollView.uniformItemSize = CGSizeMake(90, 50);
             //this must be called after changing any size or margin property of this class to get acurrate margin
             [horizontalScrollView setItemsMarginOnce];
             
             NSMutableArray *buttons = [NSMutableArray array];
             for (int i=1; i<21; i++) {
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 30)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
                 label.backgroundColor = [UIColor purpleColor];
                 [buttons addObject:label];
             }
             [horizontalScrollView addItems:buttons];
-            [horizontalScrollView removeItemAtIndex:0];
-            [horizontalScrollView removeItemAtIndex:1];
+//            [horizontalScrollView removeItemAtIndex:0];
+//            [horizontalScrollView removeItemAtIndex:1];
         }
+        
+        [cell.contentView addSubview:horizontalScrollView];
+        horizontalScrollView.translatesAutoresizingMaskIntoConstraints = false;
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:horizontalScrollView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:kCellHeight]];
+        [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:horizontalScrollView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
     }
     
 	
