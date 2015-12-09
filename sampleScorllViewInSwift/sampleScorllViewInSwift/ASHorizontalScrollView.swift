@@ -1,11 +1,12 @@
 /* ---------------------------------------------------------
 * ASHorizontalScrollView.swift
 * The MIT License (MIT)
-* Copyright (C) 2014 WEIWEI CHEN
+* Copyright (C) 2014-2015 WEIWEI CHEN
 * ---------------------------------------------------------
-*  HIstory
+*  History
 *  Created by WEIWEI CHEN on 14-6-8.
 *  Edit by WEIWEI CHEN 14-9-21: fix problems to work on xcode 6.0.1
+*  Edit by WEIWEI CHEN 15-12-09: change to adapt Swift 2.1, add comments on functions, remove scale when calculating margin, it seems that the behaviour in iOS 9 change the way of align views
 *
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -65,15 +66,20 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.delegate = self
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
+    /**
+     This add a new item into the scrollview
+     
+     - parameter item: the item you would like to add, it must not be nil.
+     */
     public func addItem(item:UIView)
     {
         //setup new item size and origin
         if (self.items.count>0) {
-            var lastItemRect:CGRect = self.items[self.items.count-1].frame;
+            let lastItemRect:CGRect = self.items[self.items.count-1].frame;
             item.frame = CGRectMake(lastItemRect.origin.x + self.uniformItemSize.width + self.itemsMargin, itemY, self.uniformItemSize.width, self.uniformItemSize.height)
         }
         else {
@@ -86,41 +92,62 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.contentSize = CGSizeMake(item.frame.origin.x + self.uniformItemSize.width + self.leftMarginPx, self.frame.size.height);
     }
     
-    public func addItems(items:Array<UIView>)
+    /**
+     This add multi new items into the scrollview
+     
+     - parameter items: the items in array you would like to add, it must not be nil.
+     */
+    public func addItems(items:[UIView])
     {
         for item in items {
             self.addItem(item)
         }
     }
     
+    /**
+     It re-calculate the item margin to fit in current view frame
+     - note: This must be called after changing any size or margin property of this class to get acurrate margin
+     - seealso: calculateMarginBetweenItems
+     */
     public func setItemsMarginOnce()
     {
         self.itemsMargin = self.calculateMarginBetweenItems();
     }
     
-    //calculate the exact margin between items
-    func calculateMarginBetweenItems() -> CGFloat
+    /// Calculate the exact margin between items
+    public func calculateMarginBetweenItems() -> CGFloat
     {
         //calculate how many items listed on current screen except the last half appearance one
-        var numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width*self.scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
+        let numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
         //round func is not compatible in 32bit devices but only in 64bit(5s and iPad Air), so I use this stupid way :)
-        return CGFloat(Int((self.frame.size.width*self.scale-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width));
+        return CGFloat(Int((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width));
     }
     
-    //return whether removing action is success
+    /**
+     It removes the specified item from scrollview
+     
+     - parameter item: the item you would like to remove.
+     
+     - returns: true if removing successfully.
+     */
     public func removeItem(item:UIView) -> Bool
     {
-        var index = (self.items as NSArray).indexOfObject(item);
+        let index = (self.items as NSArray).indexOfObject(item);
         if (index != NSNotFound) {
             return self.removeItemAtIndex(index)
         }
         else {return false}
     }
     
+    /**
+     It removes all items from scrollview
+     
+     - returns: true if removing successfully.
+     */
     public func removeAllItems()->Bool
     {
         for (var i = self.items.count-1; i >= 0; i--) {
-            var item:UIView = self.items[i]
+            let item:UIView = self.items[i]
             item.removeFromSuperview()
         }
         self.items.removeAll(keepCapacity: false)
@@ -129,15 +156,22 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         return true
     }
     
+    /**
+     It removes the specified item at index from scrollview
+     
+     - parameter index: the index of item you would like to remove.
+     
+     - returns: true if removing successfully.
+     */
     public func removeItemAtIndex(index:Int)->Bool
     {
         if (index < 0 || index > self.items.count-1) {return false}
         //set new x position from index to the end
         for (var i = self.items.count-1; i > index; i--) {
-            var item:UIView = self.items[i]
+            let item:UIView = self.items[i]
             item.frame = CGRectMake(CGRectGetMinX(item.frame)-self.itemsMargin-self.uniformItemSize.width, CGRectGetMinY(item.frame), CGRectGetWidth(item.frame), CGRectGetHeight(item.frame))
         }
-        var item:UIView = self.items[index]
+        let item:UIView = self.items[index]
         item.removeFromSuperview()
         self.items.removeAtIndex(index)
         self.contentSize = CGSizeMake(self.contentSize.width-self.itemsMargin-self.uniformItemSize.width, self.frame.size.height)
@@ -145,8 +179,8 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         return true
     }
     
-    //refresh all subviews for changing size of current frame
-    public func refreshSubView()
+    /// Refresh all subviews for changing size of current frame
+    private func refreshSubView()
     {
         self.setItemsMarginOnce();
         var itemX = self.leftMarginPx
@@ -164,17 +198,17 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     //ScrollView delegates
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         //warning - this seems not a safe way to get target point, however, I can't find other way to retrieve the value
-        var targetOffset:CGPoint = UnsafePointer<CGPoint>(targetContentOffset).memory;
+        let targetOffset:CGPoint = UnsafePointer<CGPoint>(targetContentOffset).memory;
         //move to closest item
         if (targetOffset.x + scrollView.frame.size.width < scrollView.contentSize.width) {
             targetContentOffset.memory.x = self.getClosestItemByX(position:targetOffset.x, inScrollView:(scrollView as! ASHorizontalScrollView)) - (scrollView as! ASHorizontalScrollView).leftMarginPx;
         }
     }
     
-    func getClosestItemByX(position xPosition:CGFloat, inScrollView scrollView:ASHorizontalScrollView) -> CGFloat
+    private func getClosestItemByX(position xPosition:CGFloat, inScrollView scrollView:ASHorizontalScrollView) -> CGFloat
     {
         //get current cloest item on the left side
-        var index = (Int)((xPosition - scrollView.leftMarginPx)/(scrollView.itemsMargin+scrollView.uniformItemSize.width))
+        let index = (Int)((xPosition - scrollView.leftMarginPx)/(scrollView.itemsMargin+scrollView.uniformItemSize.width))
         var item:UIView = scrollView.items[index]
         //check if target position is over half of current left item, if so, move to next item
         if (xPosition-item.frame.origin.x>item.frame.size.width/2) {
