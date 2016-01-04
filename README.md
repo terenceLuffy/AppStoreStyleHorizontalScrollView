@@ -23,6 +23,10 @@ Objective-C
 pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.1'
 
 ``` 
+
+### How to use it?
+Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScrollView/)
+
 ### Versions:
 1.0: Initial release
 
