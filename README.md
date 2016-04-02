@@ -10,19 +10,25 @@ It acts similar to apps sliding behaviours in App store. There are both Objectiv
 Please note that the gif is not from the sample project.
 
 ### Installation
-1. You can download the source from "Source" folder and drag into your project.
-2. Or using [CocoaPods](http://cocoapods.org)
+Install using one of the following options:
+1. Download the source from "Source" folder and drag into your project.
+2. Using [CocoaPods](http://cocoapods.org)
 
-Swift
-```ruby
-pod 'ASHorizontalScrollView', '~> 1.1'
-``` 
+    Swift
+    ```ruby
+    pod 'ASHorizontalScrollView', '~> 1.1'
+    ```
 
-Objective-C
-```ruby
-pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.1'
+    Objective-C
+    ```ruby
+    pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.1'
+    ```
+3. Using [Carthage](https://github.com/Carthage/Carthage)
 
-``` 
+    Swift
+    ```shell
+    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.1
+    ```
 
 ### How to use it?
 Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScrollView/)
