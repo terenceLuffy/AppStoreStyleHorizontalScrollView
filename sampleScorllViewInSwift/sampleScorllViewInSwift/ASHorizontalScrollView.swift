@@ -1,12 +1,13 @@
 /* ---------------------------------------------------------
 * ASHorizontalScrollView.swift
 * The MIT License (MIT)
-* Copyright (C) 2014-2015 WEIWEI CHEN
+* Copyright (C) 2014-2016 WEIWEI CHEN
 * ---------------------------------------------------------
 *  History
 *  Created by WEIWEI CHEN on 14-6-8.
 *  Edit by WEIWEI CHEN 14-9-21: fix problems to work on xcode 6.0.1
 *  Edit by WEIWEI CHEN 15-12-09: change to adapt Swift 2.1, add comments on functions, remove scale when calculating margin, it seems that the behaviour in iOS 9 change the way of align views
+*  Edit by WEIWEI CHEN 16-05-17: change C style code to swift 3 format, fix removeItemAtIndex last index crash bug
 *
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -146,7 +147,7 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
      */
     public func removeAllItems()->Bool
     {
-        for (var i = self.items.count-1; i >= 0; i--) {
+        for i in (0...self.items.count-1).reverse() {
             let item:UIView = self.items[i]
             item.removeFromSuperview()
         }
@@ -167,10 +168,13 @@ public class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     {
         if (index < 0 || index > self.items.count-1) {return false}
         //set new x position from index to the end
-        for (var i = self.items.count-1; i > index; i--) {
-            let item:UIView = self.items[i]
-            item.frame = CGRectMake(CGRectGetMinX(item.frame)-self.itemsMargin-self.uniformItemSize.width, CGRectGetMinY(item.frame), CGRectGetWidth(item.frame), CGRectGetHeight(item.frame))
+        if index != self.items.count-1{
+            for i in (index+1...self.items.count-1).reverse() {
+                let item:UIView = self.items[i]
+                item.frame = CGRectMake(CGRectGetMinX(item.frame)-self.itemsMargin-self.uniformItemSize.width, CGRectGetMinY(item.frame), CGRectGetWidth(item.frame), CGRectGetHeight(item.frame))
+            }
         }
+        
         let item:UIView = self.items[index]
         item.removeFromSuperview()
         self.items.removeAtIndex(index)
