@@ -8,6 +8,7 @@
  *  Edit by WEIWEI CHEN 14-9-21: fix problems to work on xcode 6.0.1
  *  Edit by WEIWEI CHEN 15-12-09: add comments on functions, remove scale when calculating margin, it seems that the behaviour in iOS 9 change the way of align views
  *  Edit by WEIWEI CHEN 16-05-17: fix removeItemAtIndex last index crash bug
+ *  Edit by WEIWEI CHEN 16-09-15: add support to nib, just change the class on nib file to ASHorizontalScrollView
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -29,26 +30,38 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _items = [NSMutableArray array];
-        
-        //default item size is 80% of height
-        _uniformItemSize = CGSizeMake(frame.size.height*0.8, frame.size.height*0.8);
-        
-        //default attributes
-        _leftMarginPx = kDefaultLeftMargin;
-        _miniMarginPxBetweenItems = kMinMarginBetweenItems;
-        _miniAppearPxOfLastItem = kMinWidthAppearOfLastItem;
-        
-        //get default item margin
-        [self setItemsMarginOnce];
-        
-        [self setShowsHorizontalScrollIndicator:NO];
-        [self setDecelerationRate:UIScrollViewDecelerationRateFast];
-        
-        scrollViewdelegate = [[ASHorizontalScrollViewDelegate alloc] init];
-        self.delegate = scrollViewdelegate;
+        [self initView];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initView];
+    }
+    return self;
+}
+
+- (void)initView {
+    _items = [NSMutableArray array];
+    
+    //default item size is 80% of height
+    _uniformItemSize = CGSizeMake(self.frame.size.height*0.8, self.frame.size.height*0.8);
+    
+    //default attributes
+    _leftMarginPx = kDefaultLeftMargin;
+    _miniMarginPxBetweenItems = kMinMarginBetweenItems;
+    _miniAppearPxOfLastItem = kMinWidthAppearOfLastItem;
+    
+    //get default item margin
+    [self setItemsMarginOnce];
+    
+    [self setShowsHorizontalScrollIndicator:NO];
+    [self setDecelerationRate:UIScrollViewDecelerationRateFast];
+    
+    scrollViewdelegate = [[ASHorizontalScrollViewDelegate alloc] init];
+    self.delegate = scrollViewdelegate;
 }
 
 - (void)setFrame:(CGRect)frame
@@ -67,7 +80,12 @@
     itemY = (self.frame.size.height-uniformItemSize.height)/2;
 }
 
-
+- (BOOL)touchesShouldCancelInContentView:(UIView *)view {
+    if ([view isKindOfClass:[UIButton class]]) {
+        return true;
+    }
+    return false;
+}
 
 #pragma mark - add item
 - (void)addItem:(UIView*)item

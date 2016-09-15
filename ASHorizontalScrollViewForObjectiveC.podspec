@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ASHorizontalScrollViewForObjectiveC"
-  s.version      = "1.2"
+  s.version      = "1.3"
   s.summary      = "App store style horizontal scroll view Objective-C"
   s.description  = <<-DESC
                    It acts similar to apps sliding behaviours in App store. There are both Objective-C and Swift version available and they perform exactly the same function, please find whichever you like.
@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
   s.author       = { "Weiwei Chen" => "terenceluffy@gmail.com" }
   s.platform     = :ios, "8.0"
   s.ios.deployment_target = "8.0"
-  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.2" }
+  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.3" }
   s.source_files  = 'Sources/ASHorizontalScrollView/*'
 end
