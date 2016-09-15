@@ -17,19 +17,19 @@ Install using one of the following options:
 
     Swift
     ```ruby
-    pod 'ASHorizontalScrollView', '~> 1.2'
+    pod 'ASHorizontalScrollView', '~> 1.3'
     ```
 
     Objective-C
     ```ruby
-    pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.2'
+    pod 'ASHorizontalScrollViewForObjectiveC', '~> 1.3'
     ```
 
 3. Using [Carthage](https://github.com/Carthage/Carthage)
 
     Swift
     ```shell
-    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.2
+    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.3
     ```
 
 ### How to use it?
@@ -41,6 +41,8 @@ Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScro
 1.1: Change to adapt iOS 9 and Swift 2.1
 
 1.2: Change C style code to Swift 3 compatible code, fix removeItemAtIndex last index crash bug
+
+1.3: Supoort Swift 3 and XCode 8, add support to nib file
 
 ### iOS Supported Version
 It is developed based on UIScrollView and its delegate methods, so it is completely compatible to most iOS versions. But the Swift version requires 8.0 or above.
