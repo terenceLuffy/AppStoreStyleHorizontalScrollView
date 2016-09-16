@@ -13,7 +13,7 @@ Please note that the gif is not from the sample project.
 Install using one of the following options:
 
 1. Download the source from "Source" folder and drag into your project.
-2. Using [CocoaPods](http://cocoapods.org) (DO NOT USE THIS NOW BECAUSE COCOAPODS SEEMS MESS UP MY POD IN THEIR SERVER)
+2. Using [CocoaPods](http://cocoapods.org)
 
     Swift
     ```ruby
