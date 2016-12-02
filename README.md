@@ -8,6 +8,7 @@ It acts similar to apps sliding behaviours in App store. There are both Objectiv
 ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr1.gif)  ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr2.gif)
 
 Please note that the gif is not from the sample project.
+
 Please note that from now on, the objective-C source won't be updated anymore as I have been using Swift for all my works totally.
 
 ### Installation
