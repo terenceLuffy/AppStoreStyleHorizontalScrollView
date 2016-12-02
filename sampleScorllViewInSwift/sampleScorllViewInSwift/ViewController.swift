@@ -58,19 +58,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: indentifier)
             cell?.selectionStyle = .none
             let horizontalScrollView:ASHorizontalScrollView = ASHorizontalScrollView(frame:CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: kCellHeight))
+            //for iPhone 5s and lower versions in portrait
+            horizontalScrollView.marginSettings_320 = MarginSettings(leftMargin: 10, miniMarginBetweenItems: 5, miniAppearWidthOfLastItem: 20)
+            // for iPhone 6 plus and 6s plus in portrait
+            horizontalScrollView.marginSettings_414 = MarginSettings(leftMargin: 10, miniMarginBetweenItems: 5, miniAppearWidthOfLastItem: 20)
+            // for iPhone 6 plus and 6s plus in landscape
+            horizontalScrollView.marginSettings_736 = MarginSettings(leftMargin: 10, miniMarginBetweenItems: 10, miniAppearWidthOfLastItem: 30)
+            //for all other screen sizes that doesn't set here, it would use defaultMarginSettings instead
+            
             if indexPath.row == 0{
-                horizontalScrollView.miniAppearPxOfLastItem = 10
+                //you can set margin for specific item size here
+                horizontalScrollView.marginSettings_414?.miniMarginBetweenItems = 20
                 horizontalScrollView.uniformItemSize = CGSize(width: 50, height: 50)
                 //this must be called after changing any size or margin property of this class to get acurrate margin
                 horizontalScrollView.setItemsMarginOnce()
-                for _ in 1...20{
+                for _ in 1...13{
                     let button = UIButton(frame: CGRect.zero)
                     button.backgroundColor = UIColor.blue
                     horizontalScrollView.addItem(button)
                 }
             }
             else if indexPath.row == 1 {
-                horizontalScrollView.miniAppearPxOfLastItem = 30
+                horizontalScrollView.marginSettings_414?.miniAppearWidthOfLastItem = 30
                 horizontalScrollView.uniformItemSize = CGSize(width: 80, height: 50)
                 //this must be called after changing any size or margin property of this class to get acurrate margin
                 horizontalScrollView.setItemsMarginOnce()
@@ -84,6 +93,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             horizontalScrollView.translatesAutoresizingMaskIntoConstraints = false
             cell?.contentView.addConstraint(NSLayoutConstraint(item: horizontalScrollView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: kCellHeight))
             cell?.contentView.addConstraint(NSLayoutConstraint(item: horizontalScrollView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: cell!.contentView, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0))
+        }
+        else if let horizontalScrollView = cell?.contentView.subviews.first(where: { (view) -> Bool in
+            return view is ASHorizontalScrollView
+        }) as? ASHorizontalScrollView {
+            horizontalScrollView.refreshSubView() //refresh view incase orientation changes
         }
         return cell!
     }

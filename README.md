@@ -8,6 +8,7 @@ It acts similar to apps sliding behaviours in App store. There are both Objectiv
 ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr1.gif)  ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr2.gif)
 
 Please note that the gif is not from the sample project.
+Please note that from now on, the objective-C source won't be updated anymore as I have been using Swift for all my works totally.
 
 ### Installation
 Install using one of the following options:
@@ -17,7 +18,7 @@ Install using one of the following options:
 
     Swift
     ```ruby
-    pod 'ASHorizontalScrollView', '~> 1.3'
+    pod 'ASHorizontalScrollView', '~> 1.4'
     ```
 
     Objective-C
@@ -29,7 +30,7 @@ Install using one of the following options:
 
     Swift
     ```shell
-    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.3
+    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.4
     ```
 
 ### How to use it?
@@ -43,6 +44,8 @@ Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScro
 1.2: Change C style code to Swift 3 compatible code, fix removeItemAtIndex last index crash bug
 
 1.3: Supoort Swift 3 and XCode 8, add support to nib file
+
+1.4: Add custom width when judging whether to scroll to next item; add support to all Apple devices screen size, now you can specified different mini margin, mini appear width and left margin for all sorts of screen sizes. 
 
 ### iOS Supported Version
 It is developed based on UIScrollView and its delegate methods, so it is completely compatible to most iOS versions. But the Swift version requires 8.0 or above.

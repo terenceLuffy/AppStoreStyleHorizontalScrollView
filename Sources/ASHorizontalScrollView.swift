@@ -9,6 +9,7 @@
 *  Edit by WEIWEI CHEN 15-12-09: change to adapt Swift 2.1, add comments on functions, remove scale when calculating margin, it seems that the behaviour in iOS 9 change the way of align views
 *  Edit by WEIWEI CHEN 16-05-17: change C style code to swift 3 format, fix removeItemAtIndex last index crash bug
 *  Edit by WEIWEI CHEN 16-09-15: Change to adapt Swift 3 with Xcode 8, add support to nib, just change the class on nib file to ASHorizontalScrollView
+*  Edit by WEIWEI CHEN 16-12-02: When current item scroll to more than specified width, auto scroll to next item (mimic App Store behaviour which is about 1/3); add support to all apple screen sizes, now you can specified different mini margin, mini appear width and left margin for all sorts of screen sizes.
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 *
@@ -19,9 +20,21 @@
 
 import UIKit
 
-open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
-    let scale = UIScreen.main.scale
+
+/// settings for margins
+public struct MarginSettings {
+    /// the margin between left border and first item
+    public var leftMargin:CGFloat = 5.0
     
+    /// the mini margin between items, it is the seed to calculate the actual margin which is not less than
+    public var miniMarginBetweenItems:CGFloat  = 10.0
+    
+    /// the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
+    public var miniAppearWidthOfLastItem:CGFloat = 20.0
+}
+
+open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
+    // MARK: - properties
     override open var frame: CGRect{
         didSet{
             itemY = (frame.size.height-self.uniformItemSize.height)/2
@@ -42,20 +55,115 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
             itemY = (frame.size.height-self.uniformItemSize.height)/2
         }
     }
+    /// the width to move to next item when target point which stops at an item is larger or equal than, default value is 1/3 that means, for example, if scrolling stops at half of an item, auto scroll to next item
+    public var widthToScrollNextItem:CGFloat = 1/3
+    
+    public var marginSettings:MarginSettings {
+        get {
+            switch UIScreen.main.bounds.width {
+            //for portrait
+            case 320:
+                if let setting = marginSettings_320 {
+                    return setting
+                }
+            case 375:
+                if let setting = marginSettings_375 {
+                    return setting
+                }
+            case 414:
+                if let setting = marginSettings_414 {
+                    return setting
+                }
+            case 768:
+                if let setting = marginSettings_768 {
+                    return setting
+                }
+            case 1024:
+                if let setting = marginSettings_1024 {
+                    return setting
+                }
+            //for landscape
+            case 480:
+                if let setting = marginSettings_480 {
+                    return setting
+                }
+            case 568:
+                if let setting = marginSettings_568 {
+                    return setting
+                }
+            case 667:
+                if let setting = marginSettings_667 {
+                    return setting
+                }
+            case 736:
+                if let setting = marginSettings_736 {
+                    return setting
+                }
+            case 1024:
+                if let setting = marginSettings_1024 {
+                    return setting
+                }
+            case 1366:
+                if let setting = marginSettings_1366 {
+                    return setting
+                }
+            default:
+                break
+            }
+            
+            return defaultMarginSettings
+        }
+    }
+    
+    /// the default setting used if you don't set other margin settings for specific screen size
+    public var defaultMarginSettings = MarginSettings()
+    /// for iPhone 5s and lower versions in portrait
+    public var marginSettings_320:MarginSettings?
+    /// for iPhone 6 and 6s in portrait
+    public var marginSettings_375:MarginSettings?
+    /// for iPhone 6 plus and 6s plus in portrait
+    public var marginSettings_414:MarginSettings?
+    /// for ipad in portrait
+    public var marginSettings_768:MarginSettings?
+    
+    /// for iPhone 4s and lower versions in landscape
+    public var marginSettings_480:MarginSettings?
+    /// for iPhone 5 and 5s in landscape
+    public var marginSettings_568:MarginSettings?
+    /// for iPhone 6 and 6s in landscape
+    public var marginSettings_667:MarginSettings?
+    /// for iPhone 6 plus and 6s plus in landscape
+    public var marginSettings_736:MarginSettings?
+    /// for ipad and ipad pro 9.7 in landscape and ipad pro 12.9 portrait
+    public var marginSettings_1024:MarginSettings?
+    /// for ipad pro 12.9 in landscape
+    public var marginSettings_1366:MarginSettings?
     
     /// store the current items' margin
     open var itemsMargin:CGFloat = 10.0
     
     /// the margin between left border and first item
-    open var leftMarginPx:CGFloat = 5.0
+    open var leftMarginPx:CGFloat {
+        get {
+            return self.marginSettings.leftMargin
+        }
+    }
     
     /// the mini margin between items, it is the seed to calculate the actual margin which is not less than
-    open var miniMarginPxBetweenItems:CGFloat  = 10.0
+    open var miniMarginPxBetweenItems:CGFloat {
+        get {
+            return self.marginSettings.miniMarginBetweenItems
+        }
+    }
     
     /// the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
-    open var miniAppearPxOfLastItem:CGFloat = 20.0
+    open var miniAppearPxOfLastItem:CGFloat {
+        get {
+            return self.marginSettings.miniAppearWidthOfLastItem
+        }
+    }
     
-    
+    // MARK: - view init
     public override init(frame: CGRect) {
         super.init(frame: frame)
         initView()
@@ -81,7 +189,7 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         }
         return false
     }
-    
+    // MARK: - methods
     /**
      This add a new item into the scrollview
      
@@ -197,7 +305,7 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     }
     
     /// Refresh all subviews for changing size of current frame
-    fileprivate func refreshSubView()
+    public func refreshSubView()
     {
         self.setItemsMarginOnce();
         var itemX = self.leftMarginPx
@@ -211,8 +319,7 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.contentSize = CGSize(width: itemX, height: self.frame.size.height)
     }
     
-    
-    //ScrollView delegates
+    // MARK: - ScrollView delegates
     open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetOffset:CGPoint = targetContentOffset.pointee;
         //move to closest item
@@ -229,13 +336,9 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
             index = 0
         }
         var item:UIView = scrollView.items[index]
-        //check if target position is over half of current left item, if so, move to next item
-        if (xPosition-item.frame.origin.x>item.frame.size.width/2) {
+        //check if target position is over widthToScrollNextItem of current left item, if so, move to next item
+        if (xPosition-item.frame.origin.x > item.frame.size.width * widthToScrollNextItem) {
             item = scrollView.items[index+1]
-            //check if target position plus scroll view width over content width, if so, move back to last item
-            if (item.frame.origin.x + scrollView.frame.size.width > scrollView.contentSize.width) {
-                item = scrollView.items[index]
-            }
         }
         
         return item.frame.origin.x
