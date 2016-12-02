@@ -163,11 +163,11 @@
 				TargetAttributes = {
 					7465DED419453DB100AA9A5D = {
 						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 					};
 					7465DEE619453DB100AA9A5D = {
 						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						TestTargetID = 7465DED419453DB100AA9A5D;
 					};
 				};
