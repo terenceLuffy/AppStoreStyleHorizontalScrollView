@@ -2,8 +2,13 @@ ASHorizontalScrollView
 =================================
 
 App store style horizontal scroll view
+![Swift Version](https://img.shields.io/badge/Swift-3.0.1-orange.svg) 
+![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg) 
+![Plaform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg )
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)](https://github.com/Carthage/Carthage)
+[![Pod Version](https://img.shields.io/badge/Pod-1.1.0-6193DF.svg)](https://cocoapods.org/)
 
-It acts similar to apps sliding behaviours in App store. There are both Objective-C and Swift version available and they perform exactly the same function, please find whichever you like.
+It acts similar to apps sliding behaviours in App store. There are both Objective-C (do not update anymore since v1.3) and Swift version available and they perform exactly the same function, please find whichever you like.
 
 ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr1.gif)  ![](https://dl.dropboxusercontent.com/u/91675323/thumbookr2.gif)
 
@@ -35,7 +40,7 @@ Install using one of the following options:
     ```
 
 ### How to use it?
-Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScrollView/)
+Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScrollView/) (updated for v1.4, please check sample project for usage)
 
 ### Versions:
 1.0: Initial release
