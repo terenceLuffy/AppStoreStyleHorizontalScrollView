@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------
 * ASHorizontalScrollView.swift
 * The MIT License (MIT)
-* Copyright (C) 2014-2016 WEIWEI CHEN
+* Copyright (C) 2014-2017 WEIWEI CHEN
 * ---------------------------------------------------------
 *  History
 *  Created by WEIWEI CHEN on 14-6-8.
@@ -10,6 +10,7 @@
 *  Edit by WEIWEI CHEN 16-05-17: change C style code to swift 3 format, fix removeItemAtIndex last index crash bug
 *  Edit by WEIWEI CHEN 16-09-15: Change to adapt Swift 3 with Xcode 8, add support to nib, just change the class on nib file to ASHorizontalScrollView
 *  Edit by WEIWEI CHEN 16-12-02: When current item scroll to more than specified width, auto scroll to next item (mimic App Store behaviour which is about 1/3); add support to all apple screen sizes, now you can specified different mini margin, mini appear width and left margin for all sorts of screen sizes.
+*  Edit by WEIWEI CHEN 17-01-24: Introduce new properties to allow set number of items per screen for multiple screen sizes instead of setting minimum margins, as well as new properties to center subviews when items are not wide enough to use whole screen width
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 *
@@ -31,6 +32,41 @@ public struct MarginSettings {
     
     /// the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
     public var miniAppearWidthOfLastItem:CGFloat = 20.0
+    
+    /// number of items per screen, it can be integer like 3, that means total 3 items occupy whole screen, 4.5 means total 4 items and one half item show on the right end. Please note that if numberOfItemsPerScreen is more than screen width, the maximum allowed number of items per screen would be calculated by left margin, and last appeared item percentage which is determined by the fractional number of this value
+    public var numberOfItemsPerScreen:Float = 0
+    
+    public init() { }
+    
+    
+    /// Use this to set margin if arrange type is set by frame
+    ///
+    /// - Parameters:
+    ///   - leftMargin: the margin between left border and first item
+    ///   - miniMarginBetweenItems: the mini margin between items, it is the seed to calculate the actual margin which is not less than
+    ///   - miniAppearWidthOfLastItem: the mini width appear for last item of current screen, set it 0 if you don't want any part of the last item appear on the right
+    public init(leftMargin:CGFloat, miniMarginBetweenItems:CGFloat, miniAppearWidthOfLastItem:CGFloat) {
+        self.leftMargin = leftMargin
+        self.miniMarginBetweenItems = miniMarginBetweenItems
+        self.miniAppearWidthOfLastItem = miniAppearWidthOfLastItem
+    }
+    
+    
+    /// Use this to set margin if arrange type is set by number per screen
+    ///
+    /// - Parameters:
+    ///   - leftMargin: the margin between left border and first item
+    ///   - numberOfItemsPerScreen: number of items per screen, it can be integer like 3, that means total 3 items occupy whole screen, 4.5 means total 4 items and one half item show on the right end.
+    /// - note: if numberOfItemsPerScreen is more than screen width, the maximum allowed number of items per screen would be calculated by left margin, and last appeared item percentage which is determined by the fractional number of this value
+    public init(leftMargin:CGFloat, numberOfItemsPerScreen:Float) {
+        self.leftMargin = leftMargin
+        self.numberOfItemsPerScreen = (numberOfItemsPerScreen >= 0 ? numberOfItemsPerScreen : 0)
+    }
+}
+
+public enum ArrangeType {
+    case byFrame
+    case byNumber
 }
 
 open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
@@ -44,13 +80,20 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
             }
         }
     }
+
+    
+    /// whether to arrange items by frame or by number of items, if set by frame, all margin would be calculated by frame size, otherwise, calculated by number of items per screen
+    /// - check `numberOfItemsPerScreen` for arranged by number type
+    open var arrangeType:ArrangeType = .byFrame
     /// y position of all items
     open var itemY: CGFloat = 0
     /// an array which refer to all added items
-    open var items: Array<UIView> = []
+    open var items: [UIView] = []
+    /// center subviews when items do not occupy whole screen
+    public var shouldCenterSubViews:Bool = false
     
     /// the uniform size of all added items, please set it before adding any items, otherwise, default size will be applied
-    open var uniformItemSize:CGSize = CGSize(width: 0,height: 0) {
+    open var uniformItemSize:CGSize = CGSize.zero {
         didSet{
             itemY = (frame.size.height-self.uniformItemSize.height)/2
         }
@@ -163,6 +206,13 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         }
     }
     
+    /// number of items per screen, it can be integer like 3, that means total 3 items occupy whole screen, 4.5 means total 4 items and one half item show on the right end
+    open var numberOfItemsPerScreen:Float {
+        get {
+            return self.marginSettings.numberOfItemsPerScreen
+        }
+    }
+    
     // MARK: - view init
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -190,6 +240,50 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         return false
     }
     // MARK: - methods
+    /**
+     It re-calculate the item margin to fit in current view frame
+     - note: This must be called after changing any size or margin property of this class to get acurrate margin
+     - seealso: calculateMarginBetweenItems
+     */
+    open func setItemsMarginOnce()
+    {
+        self.itemsMargin = self.calculateMarginBetweenItems();
+    }
+    
+    /// Calculate the exact margin between items
+    open func calculateMarginBetweenItems() -> CGFloat
+    {
+        if self.arrangeType == .byFrame {
+            return calculateMarginByFrame()
+        }
+        else {
+            return calculateMarginByNumberPerScreen()
+        }
+    }
+    
+    /// Calculate the exact margin by frame
+    open func calculateMarginByFrame() -> CGFloat {
+        //calculate how many items listed on current screen except the last half appearance one
+        let numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
+        return (self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width
+    }
+    
+    /// Calculate the exact margin by number of items per screen
+    open func calculateMarginByNumberPerScreen() -> CGFloat {
+        let numOfFull = Int(self.numberOfItemsPerScreen)
+        if numOfFull <= 0 {// if margin is not set for this screen width, use calculation by frame instead
+            return calculateMarginByFrame()
+        }
+        let lastItemPercentage = self.numberOfItemsPerScreen - Float(numOfFull)
+        var margin = (self.frame.size.width-self.leftMarginPx-self.uniformItemSize.width * CGFloat(lastItemPercentage))/CGFloat(numOfFull) - self.uniformItemSize.width
+        if margin <= 0 {//in such case, the number per screen width is larger than the screen width, calculate the max allowed number per screen using the left margin, fractional value of numberOfItemsPerScreen and mini margin between items
+            let numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width-self.leftMarginPx-self.uniformItemSize.width * CGFloat(lastItemPercentage))/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
+            margin = (self.frame.size.width-self.leftMarginPx-self.uniformItemSize.width * CGFloat(lastItemPercentage))/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width
+        }
+        
+        return margin
+    }
+    
     /**
      This add a new item into the scrollview
      
@@ -222,25 +316,6 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         for item in items {
             self.addItem(item)
         }
-    }
-    
-    /**
-     It re-calculate the item margin to fit in current view frame
-     - note: This must be called after changing any size or margin property of this class to get acurrate margin
-     - seealso: calculateMarginBetweenItems
-     */
-    open func setItemsMarginOnce()
-    {
-        self.itemsMargin = self.calculateMarginBetweenItems();
-    }
-    
-    /// Calculate the exact margin between items
-    open func calculateMarginBetweenItems() -> CGFloat
-    {
-        //calculate how many items listed on current screen except the last half appearance one
-        let numberOfItemForCurrentWidth = floorf(Float((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/(self.uniformItemSize.width+self.miniMarginPxBetweenItems)))
-        //round func is not compatible in 32bit devices but only in 64bit(5s and iPad Air), so I use this stupid way :)
-        return CGFloat(Int((self.frame.size.width-self.leftMarginPx-self.miniAppearPxOfLastItem)/CGFloat(numberOfItemForCurrentWidth) - self.uniformItemSize.width));
     }
     
     /**
@@ -309,14 +384,45 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
     {
         self.setItemsMarginOnce();
         var itemX = self.leftMarginPx
+        if self.shouldCenterSubViews {
+            itemX = centerSubviews()
+        }
+        else {
+            itemX = self.reorderSubViews()
+        }
+        self.contentSize = CGSize(width: itemX, height: self.frame.size.height)
+    }
+    
+    private func reorderSubViews() -> CGFloat {
+        var itemX = self.leftMarginPx
         for item in self.items
         {
             item.frame = CGRect(x: itemX, y: item.frame.origin.y, width: item.frame.width, height: item.frame.height)
             itemX += item.frame.width + self.itemsMargin
         }
         
-        itemX = itemX - self.itemsMargin + self.leftMarginPx;
-        self.contentSize = CGSize(width: itemX, height: self.frame.size.height)
+        return itemX - self.itemsMargin + self.leftMarginPx;
+    }
+    
+    
+    /// center subviews if all items can not fully occupy whole screen width
+    ///
+    /// - Returns: the scroll view content width
+    public func centerSubviews() -> CGFloat{
+        if let itemLastX = self.items.last?.frame.maxX {
+            if itemLastX + self.leftMarginPx < self.frame.size.width {
+                let extraGap = (self.frame.size.width - (self.itemsMargin + self.uniformItemSize.width) * CGFloat(self.items.count) + self.itemsMargin - self.leftMarginPx * 2) / 2
+                var itemX = self.leftMarginPx + extraGap
+                for item in self.items
+                {
+                    item.frame = CGRect(x: itemX, y: item.frame.origin.y, width: item.frame.width, height: item.frame.height)
+                    itemX += item.frame.width + self.itemsMargin
+                }
+                return itemX - self.itemsMargin + self.leftMarginPx + extraGap;
+            }
+            return self.reorderSubViews()
+        }
+        return 0
     }
     
     // MARK: - ScrollView delegates
