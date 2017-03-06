@@ -24,7 +24,7 @@ Install using one of the following options:
 
     Swift
     ```ruby
-    pod 'ASHorizontalScrollView', '~> 1.5'
+    pod 'ASHorizontalScrollView', '~> 1.5.1'
     ```
 
     Objective-C
@@ -36,7 +36,7 @@ Install using one of the following options:
 
     Swift
     ```shell
-    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.5
+    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.5.1
     ```
 
 ### How to use it?
@@ -54,6 +54,7 @@ Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScro
 1.4: Add custom width when judging whether to scroll to next item; add support to all Apple devices screen size, now you can specified different mini margin, mini appear width and left margin for all sorts of screen sizes. 
 
 1.5: Introduce new properties to allow set number of items per screen for multiple screen sizes instead of setting minimum margins, as well as new properties to center subviews when items are not wide enough to use whole screen width
+1.5.1: Add checking on items size before removing all items to avoid crash
 
 ### iOS Supported Version
 iOS 8.0 or above.

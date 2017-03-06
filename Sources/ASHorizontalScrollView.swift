@@ -11,6 +11,7 @@
 *  Edit by WEIWEI CHEN 16-09-15: Change to adapt Swift 3 with Xcode 8, add support to nib, just change the class on nib file to ASHorizontalScrollView
 *  Edit by WEIWEI CHEN 16-12-02: When current item scroll to more than specified width, auto scroll to next item (mimic App Store behaviour which is about 1/3); add support to all apple screen sizes, now you can specified different mini margin, mini appear width and left margin for all sorts of screen sizes.
 *  Edit by WEIWEI CHEN 17-01-24: Introduce new properties to allow set number of items per screen for multiple screen sizes instead of setting minimum margins, as well as new properties to center subviews when items are not wide enough to use whole screen width
+*  Edit by WEIWEI CHEN 17-03-03: check items size before removing all items
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 *
@@ -330,10 +331,8 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         guard let index = self.items.index(of: item) else {
             return false
         }
-        if (index != NSNotFound) {
-            return self.removeItemAtIndex(index)
-        }
-        else {return false}
+        
+        return self.removeItemAtIndex(index)
     }
     
     /**
@@ -343,12 +342,16 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
      */
     open func removeAllItems()->Bool
     {
+        if self.items.count == 0 {
+            return false
+        }
+        
         for i in (0...self.items.count-1).reversed() {
             let item:UIView = self.items[i]
             item.removeFromSuperview()
         }
         self.items.removeAll(keepingCapacity: false)
-        self.contentSize = CGSize(width: self.contentSize.width-self.itemsMargin-self.uniformItemSize.width, height: self.frame.size.height)
+        self.contentSize = self.frame.size
         
         return true
     }
