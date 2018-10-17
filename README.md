@@ -2,7 +2,7 @@ ASHorizontalScrollView
 =================================
 
 App store style horizontal scroll view
-![Swift Version](https://img.shields.io/badge/Swift-3.0.1-orange.svg) 
+![Swift Version](https://img.shields.io/badge/Swift-4.2-orange.svg) 
 ![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg) 
 ![Plaform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg )
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)](https://github.com/Carthage/Carthage)
@@ -24,7 +24,7 @@ Install using one of the following options:
 
     Swift
     ```ruby
-    pod 'ASHorizontalScrollView', '~> 1.5.1'
+    pod 'ASHorizontalScrollView', '~> 1.5.2'
     ```
 
     Objective-C
@@ -36,7 +36,7 @@ Install using one of the following options:
 
     Swift
     ```shell
-    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.5.1
+    github "terenceLuffy/AppStoreStyleHorizontalScrollView" ~> 1.5.2
     ```
 
 ### How to use it?
@@ -57,12 +57,14 @@ Please check in [here](http://terenceluffy.github.io/how-to-use-ASHorizontalScro
 
 1.5.1: Add checking on items size before removing all items to avoid crash
 
+1.5.2: Migrate to Swift 4.2 and add settings for iPhone X, Xs, XR and Xs Max landscape support
+
 ### iOS Supported Version
 iOS 8.0 or above.
 
 ### Authorization
 The MIT License (MIT)
-Copyright (C) 2014-2017 WEIWEI CHEN
+Copyright (C) 2014-Current WEIWEI CHEN
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
