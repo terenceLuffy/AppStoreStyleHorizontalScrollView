@@ -143,10 +143,6 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
                 if let setting = marginSettings_736 {
                     return setting
                 }
-            case 1024:
-                if let setting = marginSettings_1024 {
-                    return setting
-                }
             case 1366:
                 if let setting = marginSettings_1366 {
                     return setting
@@ -230,7 +226,7 @@ open class ASHorizontalScrollView: UIScrollView, UIScrollViewDelegate {
         self.uniformItemSize = CGSize(width: frame.size.height*0.8, height: frame.size.height*0.8)
         
         self.showsHorizontalScrollIndicator = false
-        self.decelerationRate = UIScrollViewDecelerationRateFast
+        self.decelerationRate = UIScrollView.DecelerationRate.fast
         self.delegate = self
     }
     
