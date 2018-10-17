@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ASHorizontalScrollView"
-  s.version      = "1.5.1"
+  s.version      = "1.5.2"
   s.summary      = "App store style horizontal scroll view"
   s.description  = <<-DESC
                    It acts similar to apps sliding behaviours in App store. There are both Objective-C and Swift version available and they perform exactly the same function, please find whichever you like.
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView"
   s.license      = { :type => 'MIT', :text => <<-LICENSE
  * The MIT License (MIT)
- * Copyright (C) 2014-2017 WEIWEI CHEN
+ * Copyright (C) 2014-Current WEIWEI CHEN
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.author       = { "Weiwei Chen" => "terenceluffy@gmail.com" }
   s.platform     = :ios, "8.0"
   s.ios.deployment_target = "8.0"
-  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.5.1"}
+  s.source       = { :git => 'https://github.com/terenceLuffy/AppStoreStyleHorizontalScrollView.git', :tag => "1.5.2"}
   s.source_files  = 'Sources/ASHorizontalScrollView.swift'
   s.frameworks = 'UIKit'
   s.requires_arc = true
